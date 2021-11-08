@@ -5,24 +5,22 @@ namespace program
 {
     class Program
     {
-        static long Factorial(long n)
+        static void ThreadFunc(object o)
         {
-            long res = 1;
-            do
-            {
-                res = res * n;
-            } while (--n > 0);
-            return res;
+            for (int i = 0; i < 20; i++)
+                Console.Write(o);
         }
         static void Main()
         {
-            for (int i = 0; i < 10; i++)
-            {
-                int i_copy = i;
-                Thread t = new Thread(() => Console.Write("ABCDEFGHIJK"[i_copy]));
-                t.Start();
-            }
+            Thread[] t = new Thread[4];
+            for (int i = 0; i < 4; i++)
+                t[i] = new Thread(ThreadFunc);
 
+            t[0].Start("A"); t[1].Start("B");
+            t[2].Start("C"); t[3].Start("D");
+
+            for (int i = 0; i < 4; i++)
+                t[i].Join();
         }
 
     }
