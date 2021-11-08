@@ -3,26 +3,40 @@ using System.Threading;
 
 namespace program
 {
+    public class ThreadWork
+    {
+        private string sharedWord;
+        public void Run(string secretWord)
+        {
+            sharedWord = secretWord;
+            Save(secretWord);
+            Thread.Sleep(500);
+            Show();
+        }
+        private void Save(string s)
+        {
+            LocalDataStoreSlot slot =
+                   Thread.GetNamedDataSlot("Secret");
+            Thread.SetData(slot, s);
+        }
+        private void Show()
+        {
+            LocalDataStoreSlot slot = Thread.GetNamedDataSlot("Secret");
+            object secretWord = Thread.GetData(slot);
+            Console.WriteLine("Thread {0}, secret word: {1},  shared word: {2} ", Thread.CurrentThread.ManagedThreadId, secretWord, sharedWord);
+        }
+    }
     class Program
     {
-        static void ThreadFunc(object o)
-        {
-            for (int i = 0; i < 20; i++)
-                Console.Write(o);
-        }
         static void Main()
         {
-            Thread[] t = new Thread[4];
-            for (int i = 0; i < 4; i++)
-                t[i] = new Thread(ThreadFunc);
-
-            t[0].Start("A"); t[1].Start("B");
-            t[2].Start("C"); t[3].Start("D");
-
-            for (int i = 0; i < 4; i++)
-                t[i].Join();
+            ThreadWork thr = new ThreadWork();
+            new Thread(() => thr.Run("one")).Start();
+            new Thread(() => thr.Run("two")).Start();
+            new Thread(() => thr.Run("three")).Start();
+            Thread.Sleep(1000);
         }
-
     }
+
 
 }
