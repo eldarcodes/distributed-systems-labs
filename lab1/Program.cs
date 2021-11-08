@@ -16,19 +16,13 @@ namespace program
         }
         static void Main()
         {
-            long res1 = 0;
-            long res2 = 0;
-            long n1 = 5000, n2 = 10000;
-            Thread t1 = new Thread(() => { res1 = Factorial(n1); });
-            Thread t2 = new Thread(() => { res2 = Factorial(n2); });
+            for (int i = 0; i < 10; i++)
+            {
+                int i_copy = i;
+                Thread t = new Thread(() => Console.Write("ABCDEFGHIJK"[i_copy]));
+                t.Start();
+            }
 
-            t1.Start();
-            t2.Start();
-
-            t1.Join();
-            t2.Join();
-            Console.WriteLine("Factorial of {0} equals {1}", n1, res1);
-            Console.WriteLine("Factorial of {0} equals {1}", n2, res2);
         }
 
     }
