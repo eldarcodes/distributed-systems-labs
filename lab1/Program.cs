@@ -5,17 +5,32 @@ namespace program
 {
     class Program
     {
-        static void Main(string[] args)
+        static long Factorial(long n)
         {
-            Thread thr1 = new Thread(() => { for (int i = 0; i < 5; i++) Console.Write("A"); });
-            Thread thr2 = new Thread(() => { for (int i = 0; i < 5; i++) Console.Write("B"); });
-            Thread thr3 = new Thread(() => { for (int i = 0; i < 5; i++) Console.Write("C"); });
-            thr1.Start();
-            thr2.Start();
-            thr1.Join();
-            thr2.Join();
-            thr3.Start();
-
+            long res = 1;
+            do
+            {
+                res = res * n;
+            } while (--n > 0);
+            return res;
         }
+        static void Main()
+        {
+            long res1 = 0;
+            long res2 = 0;
+            long n1 = 5000, n2 = 10000;
+            Thread t1 = new Thread(() => { res1 = Factorial(n1); });
+            Thread t2 = new Thread(() => { res2 = Factorial(n2); });
+
+            t1.Start();
+            t2.Start();
+
+            t1.Join();
+            t2.Join();
+            Console.WriteLine("Factorial of {0} equals {1}", n1, res1);
+            Console.WriteLine("Factorial of {0} equals {1}", n2, res2);
+        }
+
     }
+
 }
