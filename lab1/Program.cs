@@ -3,40 +3,32 @@ using System.Threading;
 
 namespace program
 {
-    class PriorityTesting
+    public class Data
     {
-        static long[] counts;
-        static bool finish;
-        static void ThreadFunc(object iThread)
+        public static int sharedVar;
+        [ThreadStatic] public static int localVar;
+    }
+    class Program
+    {
+        static void threadFunc(object i)
         {
-            while (true)
-            {
-                if (finish)
-                    break;
-                counts[(int)iThread]++;
-            }
+            Console.WriteLine("Thread {0}: Before changing..  Shared: {1}, local: {2}", i, Data.sharedVar, Data.localVar);
+            Data.sharedVar = (int)i;
+            Data.localVar = (int)i;
+            Console.WriteLine("Thread {0}: After changing..  Shared: {1}, local: {2} ", i, Data.sharedVar, Data.localVar);
         }
         static void Main()
         {
-            counts = new long[5];
-            Thread[] t = new Thread[5];
-            for (int i = 0; i < t.Length; i++)
-            {
-                t[i] = new Thread(ThreadFunc);
-                t[i].Priority = (ThreadPriority)i;
-            }
-            for (int i = 0; i < t.Length; i++)
-                t[i].Start(i);
+            Thread t1 = new Thread(threadFunc);
+            Thread t2 = new Thread(threadFunc);
 
-            Thread.Sleep(10000);
+            Data.sharedVar = 3;
+            Data.localVar = 3;
 
-            finish = true;
-
-            for (int i = 0; i < t.Length; i++)
-                t[i].Join();
-            for (int i = 0; i < t.Length; i++)
-                Console.WriteLine("Thread with priority {0, 15}, Counts: {0} ", (ThreadPriority)i, counts[i]);
+            t1.Start(1); t2.Start(2);
+            t1.Join(); t2.Join();
         }
+
     }
 
 }
