@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "loP+J4lNvqD+5X3hNwk/voQc0AbgBGCDqKTljNEvG0F/W220z5qEpyX4rj8Xohj4hxlCWyV0wsXlyYmtJt09dQ==",
+  "dgSpecHash": "UsSw5fJ4eTh/u0tvsxu+wt/I9RIuvDBuqro/XQef95281mC/ZJRzpaJX+9G8vMgS7U++ZHGNsaGJ2+5Xs8zmdA==",
   "success": true,
-  "projectFilePath": "E:\\mirzabekov00\\projects\\lab\\test\\test.csproj",
+  "projectFilePath": "E:\\mirzabekov00\\projects\\distributed-systems-labs\\lab1\\test.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

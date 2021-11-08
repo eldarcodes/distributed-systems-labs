@@ -5,17 +5,24 @@ namespace program
 {
     class Program
     {
-        static void Main(string[] args)
+        static void ThreadFunc(object o)
         {
-            Thread thr1 = new Thread(() => { for (int i = 0; i < 5; i++) Console.Write("A"); });
-            Thread thr2 = new Thread(() => { for (int i = 0; i < 5; i++) Console.Write("B"); });
-            Thread thr3 = new Thread(() => { for (int i = 0; i < 5; i++) Console.Write("C"); });
-            thr1.Start();
-            thr2.Start();
-            thr1.Join();
-            thr2.Join();
-            thr3.Start();
-
+            for (int i = 0; i < 20; i++)
+                Console.Write(o);
         }
+        static void Main()
+        {
+            Thread[] t = new Thread[4];
+            for (int i = 0; i < 4; i++)
+                t[i] = new Thread(ThreadFunc);
+
+            t[0].Start("A"); t[1].Start("B");
+            t[2].Start("C"); t[3].Start("D");
+
+            for (int i = 0; i < 4; i++)
+                t[i].Join();
+        }
+
     }
+
 }
